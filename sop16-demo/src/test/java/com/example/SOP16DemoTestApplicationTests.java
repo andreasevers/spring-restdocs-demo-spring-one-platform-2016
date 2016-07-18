@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.restdocs.RestDocumentation;
+import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SOP16DemoTestApplicationTests {
 
 	@Rule
-	public final RestDocumentation restDocumentation = new RestDocumentation("target/generated-snippets");
+	public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
 
 	@Autowired
 	private WebApplicationContext context;
@@ -40,18 +40,20 @@ public class SOP16DemoTestApplicationTests {
 
 	@Before
 	public void setUp() {
-	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-	            .apply(documentationConfiguration(this.restDocumentation))
+	    this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+	            .apply(documentationConfiguration(restDocumentation))
 	            .build();
 	}
 	
 	@Test
 	public void shouldGetCar() throws Exception {
-		this.mockMvc.perform(get("/cars/1")) 
+		this.mockMvc.perform(get("/cars/1"))
 	    		.andExpect(status().isOk())
 	    		.andDo(document("car-get", preprocessResponse(prettyPrint()), 
 	    				links(
-	    					halLinks(), linkWithRel("self").description("This car")),
+	    					halLinks(),
+								linkWithRel("self").description("This car"),
+								linkWithRel("driver").description("The driver of this car")),
 	    				responseFields(
 	    					fieldWithPath("brand").description("The brand of this car"),
 	    					fieldWithPath("_links").description("<<resources-car-links,Links>> to other resources"))));

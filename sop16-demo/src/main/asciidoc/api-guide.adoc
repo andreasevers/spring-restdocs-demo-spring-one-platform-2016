@@ -70,12 +70,10 @@ not create URIs themselves, instead they should use the above-described links to
 = Resources
 
 
-
 [[resources-car]]
 == Car
 
 The car resource is used to show cars available in the system.
-
 
 
 [[resources-car-get]]
@@ -92,9 +90,7 @@ include::{snippets}/car-get/response-fields.adoc[]
 include::{snippets}/car-get/http-response.adoc[]
 
 
-
 [[resources-car-links]]
 ==== Links
 
 include::{snippets}/car-get/links.adoc[]
-
